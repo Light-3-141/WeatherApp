@@ -168,32 +168,37 @@ class WeatherApp(QMainWindow):
         frame.setFixedSize(285, 134)
 
         layout = QGridLayout(frame)
+        layout.setVerticalSpacing(2)  # small gap between % and bar
 
+        # row 0: title + icon
         label = QLabel(text, font=QFont("Arial", 9, QFont.Bold))
         label.setStyleSheet("color: grey; background-color: transparent;")
-        layout.addWidget(label)
-
+        layout.addWidget(label, 0, 0, Qt.AlignLeft | Qt.AlignTop)
 
         card_icon = QSvgWidget(f"./assets/{icon}.svg")
         card_icon.setFixedSize(24, 24)
         card_icon.setStyleSheet("background-color: transparent;")
-        layout.addWidget(card_icon, 0, 1)
+        layout.addWidget(card_icon, 0, 1, Qt.AlignRight | Qt.AlignTop)
 
-        layout.setRowStretch(1,1)
-        layout.setColumnStretch(2,1)
+        # row 1: empty, absorbs all free space
+        layout.setRowStretch(1, 1)
 
+        # row 2: value, hugging the bottom
         data_label = QLabel(data, font=QFont("Arial", 20, QFont.Bold))
-        data_label.setStyleSheet("background-color: transparent;")
-        layout.addWidget(data_label)
+        data_label.setStyleSheet("background-color: transparent; padding: 0; margin: 0;")
+        data_label.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(data_label, 2, 0, 1, 2, Qt.AlignLeft | Qt.AlignBottom)
 
-        layout.setVerticalSpacing(1)
-
+        # row 3: bar directly under the value
         if bar:
             data_bar = QProgressBar(value=78)
             data_bar.setTextVisible(False)
             data_bar.setFixedHeight(8)
-            data_bar.setStyleSheet("QProgressBar {background-color: #1E293B; border-radius: 4px;} QProgressBar::chunk {background-color: blue; border-radius: 4px;}")
-            layout.addWidget(data_bar, 2, 0)
+            data_bar.setStyleSheet("""
+                QProgressBar { border: none; background-color: #1E293B; border-radius: 4px; }
+                QProgressBar::chunk { background-color: #3b82f6; border-radius: 4px; }
+            """)
+            layout.addWidget(data_bar, 3, 0, 1, 2)
 
         return frame, data_label
 

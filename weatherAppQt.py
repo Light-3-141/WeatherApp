@@ -170,26 +170,26 @@ class WeatherApp(QMainWindow):
         layout = QGridLayout(frame)
         layout.setVerticalSpacing(2)  # small gap between % and bar
 
-        # row 0: title + icon
+        # --- Frame Lable ---
         label = QLabel(text, font=QFont("Arial", 9, QFont.Bold))
         label.setStyleSheet("color: grey; background-color: transparent;")
         layout.addWidget(label, 0, 0, Qt.AlignLeft | Qt.AlignTop)
 
+        # --- frame icon ---
         card_icon = QSvgWidget(f"./assets/{icon}.svg")
         card_icon.setFixedSize(24, 24)
         card_icon.setStyleSheet("background-color: transparent;")
         layout.addWidget(card_icon, 0, 1, Qt.AlignRight | Qt.AlignTop)
 
-        # row 1: empty, absorbs all free space
         layout.setRowStretch(1, 1)
 
-        # row 2: value, hugging the bottom
+        # --- frame's data ---
         data_label = QLabel(data, font=QFont("Arial", 20, QFont.Bold))
         data_label.setStyleSheet("background-color: transparent; padding: 0; margin: 0;")
         data_label.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(data_label, 2, 0, 1, 2, Qt.AlignLeft | Qt.AlignBottom)
 
-        # row 3: bar directly under the value
+        # --- bar ---
         if bar:
             data_bar = QProgressBar(value=78)
             data_bar.setTextVisible(False)
